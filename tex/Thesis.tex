@@ -1,0 +1,253 @@
+%% ----------------------------------------------------------------
+%% Thesis.tex -- MAIN FILE (the one that you compile with LaTeX)
+%% ---------------------------------------------------------------- 
+
+% Set up the document
+\documentclass[a4paper, 11pt, oneside]{Thesis}  % Use the "Thesis" style, based on the ECS Thesis style by Steve Gunn
+\graphicspath{Figures/}  % Location of the graphics files (set up for graphics to be in PDF format)
+
+% Include any extra LaTeX packages required
+\usepackage[square, numbers, comma, sort&compress]{natbib}  % Use the "Natbib" style for the references in the Bibliography
+\usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
+\usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
+\hypersetup{urlcolor=blue, colorlinks=true}  % Colours hyperlinks in blue, but this can be distracting if there are many links.
+
+%% ----------------------------------------------------------------
+\begin{document}
+\frontmatter      % Begin Roman style (i, ii, iii, iv...) page numbering
+
+% Set up the Title Page
+\title  {Structural multi-model coupling with CalculiX and preCICE}
+\authors  {\texorpdfstring
+            {\href{}{Alexandre Trujillo Boqu\'e}}
+            {}
+            }
+\addresses  {\groupname\\\deptname\\\univname}  % Do not change this here, instead these must be set in the "Thesis.cls" file, please look through it instead
+\date       {\today}
+\subject    {}
+\keywords   {}
+
+\maketitle
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % It is better to have smaller font and larger line spacing than the other way round
+
+% Define the page headers using the FancyHdr package and set up for one-sided printing
+\fancyhead{}  % Clears all page headers and footers
+\rhead{\thepage}  % Sets the right side header to show the page number
+\lhead{}  % Clears the left side page header
+
+\pagestyle{fancy}  % Finally, use the "fancy" page style to implement the FancyHdr headers
+
+%% ----------------------------------------------------------------
+% Declaration Page required for the Thesis, your institution may give you a different text to place here
+%Declaration{
+%}
+%\clearpage  % Declaration ended, now start a new page
+
+%% ----------------------------------------------------------------
+% The "Funny Quote Page"
+\pagestyle{empty}  % No headers or footers for the following pages
+
+\null\vfill
+% Now comes the "Funny Quote", written in italics
+\textit{``Write a funny quote here.''}
+
+\begin{flushright}
+If the quote is taken from someone, their name goes here
+\end{flushright}
+
+\vfill\vfill\vfill\vfill\vfill\vfill\null
+\clearpage  % Funny Quote page ended, start a new page
+%% ----------------------------------------------------------------
+
+% The Abstract Page
+\addtotoc{Abstract}  % Add the "Abstract" page entry to the Contents
+\abstract{
+\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+Multi-model coupling of physics simulations is necessary in several contexts. Here the goal is optimization of computational resources\ldots
+
+}
+
+\clearpage  % Abstract ended, start a new page
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % Reset the line-spacing to 1.3 for body text (if it has changed)
+
+% The Acknowledgements page, for thanking everyone
+\acknowledgements{
+\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+The acknowledgements and the people to thank go here, don't forget to include your project advisor\ldots
+
+}
+\clearpage  % End of the Acknowledgements
+%% ----------------------------------------------------------------
+
+\pagestyle{fancy}  %The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
+
+
+%% ----------------------------------------------------------------
+\lhead{\emph{Contents}}  % Set the left side page header to "Contents"
+\tableofcontents  % Write out the Table of Contents
+
+%% ----------------------------------------------------------------
+\lhead{\emph{List of Figures}}  % Set the left side page header to "List if Figures"
+\listoffigures  % Write out the List of Figures
+
+%% ----------------------------------------------------------------
+\lhead{\emph{List of Tables}}  % Set the left side page header to "List of Tables"
+\listoftables  % Write out the List of Tables
+
+%% ----------------------------------------------------------------
+\setstretch{1.5}  % Set the line spacing to 1.5, this makes the following tables easier to read
+\clearpage  % Start a new page
+\lhead{\emph{Abbreviations}}  % Set the left side page header to "Abbreviations"
+\listofsymbols{ll}  % Include a list of Abbreviations (a table of two columns)
+{
+% \textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
+\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
+
+}
+
+%% ----------------------------------------------------------------
+\clearpage  % Start a new page
+%\lhead{\emph{Physical Constants}}  % Set the left side page header to "Physical Constants"
+%\listofconstants{lrcl}  % Include a list of Physical Constants (a four column table)
+%{
+% Constant Name & Symbol & = & Constant Value (with units) \\
+%Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\
+
+%}
+
+%% ----------------------------------------------------------------
+\clearpage  %Start a new page
+\lhead{\emph{Symbols}}  % Set the left side page header to "Symbols"
+\listofnomenclature{lll}  % Include a list of Symbols (a three column table)
+{
+% symbol & name & unit \\
+$a$ & distance & m \\
+$P$ & power & W (Js$^{-1}$) \\
+& & \\ % Gap to separate the Roman symbols from the Greek
+$\omega$ & angular frequency & rads$^{-1}$ \\
+}
+%% ----------------------------------------------------------------
+% End of the pre-able, contents and lists of things
+% Begin the Dedication page
+
+\setstretch{1.3}  % Return the line spacing back to 1.3
+
+\pagestyle{empty}  % Page style needs to be empty for this page
+\dedicatory{For/Dedicated to/To my\ldots}
+
+\addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+
+
+%% ----------------------------------------------------------------
+\mainmatter	  % Begin normal, numeric (1,2,3...) page numbering
+\pagestyle{fancy}  % Return the page headers back to the "fancy" style
+
+% Include the chapters of the thesis, as separate files
+% Just uncomment the lines as you write the chapters
+
+\chapter{Introduction}
+
+% Introduce multi-physics
+The field of multi-physics simulations has achieved high popularity amongst scientists and engineers over the last decades [refs multiphysics]. An exponential gain in computational power has introduced the possibility to simulate sub-systems and their interactions simultaneously [refs of relation comput. power-multiphysics], so that they constitute models of complex phenomena, closer to real-life scenarios than single-physics models.
+Therefore we have first of all the governing equations for each component of a simulation, and the interactions between them.
+
+% Multi-physics motivated by parallel computing
+One of the main sources of computational power and possibilities of scaling is parallel computing. Another reason for the growing interest in multi-physics has been this shift towards parallel computing [refs Benjamin thesis, parallel partitioned, parallel multiphysics etc.]. This is in part related to what has already been mentioned, the increase in computational power, but also to the architecture of a multi-physics setup, where problems in sub-systems can be solved in parallel. In this thesis, parallelism is relevant since we develop a partitioned approach to multi-physics.
+
+%C% MULTIPHYSICS - MULTISCALE - MULTIMODEL
+
+% Monolithic/partitioned concept introduction 
+Depending on how we model interactions, we will construct partitioned, monolithic or mixed approaches to multi-physics. %extend...
+
+%Our multi-physics is not really "multi": there is only one physics, structural mechanics
+It must be noted that our particular case is a kind of \textit{pseudo}multi-physics, since we only deal with structural physics. Nevertheless, modelling interactions between same-physics sub-systems still represents a challenge, and compared to other multi-physics problems [refs FSI, etc., general multiphysics], there is not much work in structure-structure interaction.
+(coupling systems with the same physics can be beneficial in terms of efficiency.)
+
+% Multiphysics translates into using single solver-physics fr each system and then coupling
+
+% Contents of the thesis
+
+
+\section{Background}
+
+\section{Motivation. Goals.}
+
+Additional motivation, scaling of parallelization running Calculix in a massively parallel setup [refs Benjamin's thesis?].
+Fast-paced development, use of exisitng single-physics black-box solvers.
+
+
+
+\chapter{Theory}
+
+\section{Basic notions of computational structural meachanics}
+
+Equations of motion, Newton, (see papers you have and their refs)
+
+\section{Partitioned and monolithic approaches}
+\subsection{Monolithic structural simulation}
+\subsubsection{Gravouil and his friends, all the techniques for mono}
+\subsection{Partitioned structural simulations}
+\subsubsection{From partitioned FSI}
+(Added mass effect here?)
+\subsubsection{Actual attempts?}
+
+Always work with matching meshes since it is structure-structure and not fluid-structure, where there [of course]the mesh of the fluid usually does not match. the structure one [refs non-matching meshes] (right?)
+
+\chapter{Software used}
+
+\section{preCICE - A coupling library for partitioned multi-physics simulation}
+
+\section{CalculiX - A three-dimensional structural finite element program}
+
+\chapter{Methodology}
+\section{Implementation}
+
+Describe implementation of the structure-structure component in the preCICE adapter for CalculiX.
+
+\section{Tests}
+\subsection{Beam test case}
+\subsubsection{CalculiX input file/deck}
+\subsubsection{Geometry}
+\subsection{Comparison partitioned vs. monolithic}
+Quantification of error, using L2 norm for displacements and forces, implementation of this.
+\subsection{Convergence studies}
+\subsubsection{Parameters}
+Testing Quasi-Newton postprocessing/convergence acceleration schemes (IQN-ILS) [refs to papaers of QN, see precice papers]. Filters for Quasi-Newton [refs see Benjamin thesis].
+Testing parameters limit for filters, convergence measure limit.
+
+
+
+\chapter{Results and discussion}
+
+\section{Convergence studies}
+Study of error against convergence limit. Error proportional to convergence limit up to an offset (noise, base error,...). Test for several time steps. Error offset decreases with time step (in a reasonble range for time steps) in a very continuous and smooth way. Deduce offset is due to a time splitting error introduced by the coupling [refs. what Benni is doing, precice papers].
+
+\chapter{Conclusions}
+
+%% ----------------------------------------------------------------
+% Now begin the Appendices, including them as separate files
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+\appendix % Cue to tell LaTeX that the following 'chapters' are Appendices
+
+%\input{Appendices/AppendixA}	% Appendix Title
+
+
+\addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+\backmatter
+
+%% ----------------------------------------------------------------
+\label{Bibliography}
+\lhead{\emph{Bibliography}}  % Change the left side page header to "Bibliography"
+\bibliographystyle{unsrtnat}  % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+\bibliography{Bibliography}  % The references (bibliography) information are stored in the file named "Bibliography.bib"
+
+\end{document}  % The End
+%% ----------------------------------------------------------------

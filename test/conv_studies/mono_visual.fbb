@@ -1,0 +1,10 @@
+read Density/reference/7.8E-12_beam_mono.frd
+ds l
+view disp
+scal d 1e1
+frame
+plot e all n
+plus n all g
+rot x
+ds 1 ah
+anim tune 0.001

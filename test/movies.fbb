@@ -1,0 +1,30 @@
+read beam_part.frd
+view disp
+scal d 1e2
+frame
+plot e all n
+plus n all g
+rot x
+
+valu v2 4
+valu one1 1
+
+stack on
+
+ds l e 1
+valu vx pop
+stack off
+stack free
+
+ds v1 e 1
+valu v1 e 1
+
+while vx > v1
+ ds v1 e 1
+ valu v1 + v1 one1
+ valu v1 int v1
+ hcpy png
+endwhile
+
+sys ./ren_hcp.py
+sys convert -delay 60 -loop 0 *.png animated.gif

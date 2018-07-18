@@ -1,0 +1,7 @@
+read beam_diff.frd
+view disp
+frame
+plot e all n
+plus n all g
+rot x
+ds 1 eh 4

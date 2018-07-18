@@ -1,0 +1,9 @@
+set key autotitle
+set logscale y
+set yrange [0.00001:2]
+set xlabel "iterations"
+set ylabel "ResNorm"
+plot "convergence-Calculix2.txt" every ::2::15 u 2:3 t "Displacements" with lines, "convergence-Calculix2.txt"every ::2::15 u 2:4 t "Forces" with lines
+
+
+

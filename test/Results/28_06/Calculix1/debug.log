@@ -1,0 +1,36 @@
+(0) 11:10:24 [impl::SolverInterfaceImpl]:116 in configure: [0mConfiguring preCICE with configuration: "../precice-config.xml"
+(0) 11:10:24 [impl::SolverInterfaceImpl]:125 in configure: [0mEntering configure
+(0) 11:10:24 [impl::SolverInterfaceImpl]:1425 in configureM2Ns: [0mEntering configureM2Ns
+(0) 11:10:24 [impl::SolverInterfaceImpl]:1425 in configureM2Ns: [0mLeaving configureM2Ns
+(0) 11:10:24 [impl::SolverInterfaceImpl]:150 in configure: [0mRun in coupling mode
+(0) 11:10:24 [impl::SolverInterfaceImpl]:1459 in configurePartitions: [0mEntering configurePartitions
+(0) 11:10:24 [impl::SolverInterfaceImpl]:1500 in configurePartitions: [0mReceiving mesh from Calculix2
+(0) 11:10:24 [impl::SolverInterfaceImpl]:1459 in configurePartitions: [0mLeaving configurePartitions
+(0) 11:10:24 [impl::SolverInterfaceImpl]:125 in configure: [0mLeaving configure
+(0) 11:10:24 [impl::SolverInterfaceImpl]:554 in getMeshID: [0mEntering getMeshID
+  Argument 0: meshName == Calculix_Mesh1
+(0) 11:10:24 [impl::SolverInterfaceImpl]:554 in getMeshID: [0mLeaving getMeshID
+(0) 11:10:24 [impl::SolverInterfaceImpl]:668 in setMeshVertices: [0mEntering setMeshVertices
+  Argument 0: meshID == 0
+  Argument 1: size == 21
+(0) 11:10:24 [impl::SolverInterfaceImpl]:679 in setMeshVertices: [0mSet positions
+(0) 11:10:24 [impl::SolverInterfaceImpl]:668 in setMeshVertices: [0mLeaving setMeshVertices
+(0) 11:10:24 [impl::SolverInterfaceImpl]:583 in getDataID: [0mEntering getDataID
+  Argument 0: dataName == Displacements0
+  Argument 1: meshID == 0
+(0) 11:10:24 [impl::SolverInterfaceImpl]:573 in hasData: [0mEntering hasData
+  Argument 0: dataName == Displacements0
+  Argument 1: meshID == 0
+(0) 11:10:24 [impl::SolverInterfaceImpl]:573 in hasData: [0mLeaving hasData
+(0) 11:10:24 [impl::SolverInterfaceImpl]:583 in getDataID: [0mLeaving getDataID
+(0) 11:10:24 [impl::SolverInterfaceImpl]:583 in getDataID: [0mEntering getDataID
+  Argument 0: dataName == Forces0
+  Argument 1: meshID == 0
+(0) 11:10:24 [impl::SolverInterfaceImpl]:573 in hasData: [0mEntering hasData
+  Argument 0: dataName == Forces0
+  Argument 1: meshID == 0
+(0) 11:10:24 [impl::SolverInterfaceImpl]:573 in hasData: [0mLeaving hasData
+(0) 11:10:24 [impl::SolverInterfaceImpl]:583 in getDataID: [0mLeaving getDataID
+(0) 11:10:24 [impl::SolverInterfaceImpl]:198 in initialize: [0mEntering initialize
+(0) 11:10:24 [impl::SolverInterfaceImpl]:213 in initialize: [0mSetting up master communication to coupling partner/s 
+(0) 11:10:24 [precice::com::SocketCommunication]:334 in requestConnection: [31mERROR: [0mRequesting connection to 127.0.0.1:39865 failed: resolve: Host not found (authoritative)
