@@ -1,0 +1,19 @@
+-Join two parts of results of partitioned for visualisation:
+python part_visual.py join (set number of steps and path of frd files in script)
+
+-Create frd file of differences between any two frd files of the full domain. (e. g. for visualisation of error)
+pyhton part_visual.py makediff (set number of steps and path of frd files in script)
+
+-Validate mono vs part:
+python validation.py <mono.dat> <part.dat> (set time to compare)
+
+-Validate part vs. part:
+(Import functions form validation.py in the folders conv_studies/convergence_limit_* e.g. as in validate_all_partVSpart)
+TODO: update validation.py from Thesis/test to work with monoVSpart & partVSmono in the script itself for a single comparison.
+
+-run experiments with parameters of precice-config:
+python configGenerator.py (set desired values for experiments in the script)
+pyhton experimentRunner.py <participant> (in two terminals, one for each calculix participant)
+
+-run experiments with parameters of .inp files of calculix:
+python inp_experimentRunner.py <participant> (in two terminals, one for each calculix participant) (set desired values for experiments in the script)

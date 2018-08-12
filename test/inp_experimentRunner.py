@@ -57,8 +57,11 @@ fnames_subdir2 = ["Calculix2/beam2.dat","Calculix2/beam2.sta","Calculix2/beam2.c
 
 reset_inp()
 
+## EXPERIMENTS - Uncomment the experiment you want to run
+
 ## density experiments
-#densities = 7.8 / 10.**np.arange(7,15)
+# SET EXPERIMENTAL PARAMETERS HERE (varied_values)
+#densities = 7.8 / 10.**np.arange(22,26)
 #for rho in densities:
 
 #	if args.participant == "Calculix1":
@@ -97,57 +100,17 @@ reset_inp()
 #					continue
 #				break
 
-#reset_inp()
+reset_inp()
 
 # Young modulus experiments
-#Young_moduli = 2.1 * 10.**np.arange(3,8)
-#for E in Young_moduli:
-
-#	if args.participant == "Calculix1":
-#		changeLine( "Calculix1/beam1.inp", "ELASTIC", str(E) + ",   .3" )
-#	elif args.participant == "Calculix2":
-#		changeLine( "Calculix2/beam2.inp", "ELASTIC", str(E) + ",   .3" )
-
-#	if args.participant == "Calculix1":
-#		run_Calculix1()
-#		for fname in fnames_subdir1:
-#			while True:
-#				print fname
-#				try:
-#					os.rename( fname, "conv_studies/" + str(E) + "_" + fname[10:] )
-#				except OSError:
-#					continue
-#				break
-#	else:
-#		run_Calculix2()
-
-#		# rename and move results files so they're not overwritten
-#		for fname in fnames_cwd:
-#			while True:
-#				print fname
-#				try:
-#					os.rename( fname, "conv_studies/" + str(E) + "_" + fname )
-#				except OSError:
-#					continue
-#				break
-#		for fname in fnames_subdir2:
-#			while True:
-#				print fname
-#				try:
-#					os.rename( fname, "conv_studies/" + str(E) + "_" + fname[10:] )
-#				except OSError:
-#					continue
-#				break
-#reset_inp()
-
-# Poisson coefficient experiments
-Poisson_coefficients = 0.1 * np.arange(1,5)
-for nu in Poisson_coefficients:
+# SET EXPERIMENTAL PARAMETERS HERE (varied_values)
+Young_moduli = 2.1 * 10.**np.arange(8,15)
+for E in Young_moduli:
 
 	if args.participant == "Calculix1":
-		changeLine( "Calculix1/beam1.inp", "ELASTIC", "210000.0,   " + str(nu) )
+		changeLine( "Calculix1/beam1.inp", "ELASTIC", str(E) + ",   .3" )
 	elif args.participant == "Calculix2":
-		changeLine( "Calculix2/beam2.inp", "ELASTIC", "210000.0,   " + str(nu) )
+		changeLine( "Calculix2/beam2.inp", "ELASTIC", str(E) + ",   .3" )
 
 	if args.participant == "Calculix1":
 		run_Calculix1()
@@ -155,7 +118,7 @@ for nu in Poisson_coefficients:
 			while True:
 				print fname
 				try:
-					os.rename( fname, "conv_studies/" + str(nu) + "_" + fname[10:] )
+					os.rename( fname, "conv_studies/" + str(E) + "_" + fname[10:] )
 				except OSError:
 					continue
 				break
@@ -167,7 +130,7 @@ for nu in Poisson_coefficients:
 			while True:
 				print fname
 				try:
-					os.rename( fname, "conv_studies/" + str(nu) + "_" + fname )
+					os.rename( fname, "conv_studies/" + str(E) + "_" + fname )
 				except OSError:
 					continue
 				break
@@ -175,9 +138,51 @@ for nu in Poisson_coefficients:
 			while True:
 				print fname
 				try:
-					os.rename( fname, "conv_studies/" + str(nu) + "_" + fname[10:] )
+					os.rename( fname, "conv_studies/" + str(E) + "_" + fname[10:] )
 				except OSError:
 					continue
 				break
+reset_inp()
+
+## Poisson coefficient experiments
+## SET EXPERIMENTAL PARAMETERS HERE (varied_values)
+##Poisson_coefficients = 0.1 * np.arange(1,5)
+##for nu in Poisson_coefficients:
+
+#	if args.participant == "Calculix1":
+#		changeLine( "Calculix1/beam1.inp", "ELASTIC", "210000.0,   " + str(nu) )
+#	elif args.participant == "Calculix2":
+#		changeLine( "Calculix2/beam2.inp", "ELASTIC", "210000.0,   " + str(nu) )
+
+#	if args.participant == "Calculix1":
+#		run_Calculix1()
+#		for fname in fnames_subdir1:
+#			while True:
+#				print fname
+#				try:
+#					os.rename( fname, "conv_studies/" + str(nu) + "_" + fname[10:] )
+#				except OSError:
+#					continue
+#				break
+#	else:
+#		run_Calculix2()
+
+#		# rename and move results files so they're not overwritten
+#		for fname in fnames_cwd:
+#			while True:
+#				print fname
+#				try:
+#					os.rename( fname, "conv_studies/" + str(nu) + "_" + fname )
+#				except OSError:
+#					continue
+#				break
+#		for fname in fnames_subdir2:
+#			while True:
+#				print fname
+#				try:
+#					os.rename( fname, "conv_studies/" + str(nu) + "_" + fname[10:] )
+#				except OSError:
+#					continue
+#				break
 
 

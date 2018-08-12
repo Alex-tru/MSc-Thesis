@@ -17,7 +17,7 @@ FIX, 3
 185, 186, 187, 188, 189
 *MATERIAL,NAME=EL
 *ELASTIC
-210000.0,   0.5
+ 210000.0,        .3
 *DENSITY
  7.8E-09
 *SOLID SECTION,ELSET=Eall,MATERIAL=EL
@@ -27,22 +27,18 @@ FIX, 3
 0., 1.,
 .01, 0.,
 5., 0.
-**STEP
-**FREQUENCY, STORAGE=YES
-**10
-**END STEP
 *STEP, INC=1000000
-**STEADY STATE DYNAMICS
-**10, 10
+**CONTROLS, PARAMETERS=FIELD
+**0.00000005, .0000001
 *DYNAMIC,DIRECT
-5E-3, 100.0, 5E-3, 5E-3
-*CLOAD
+5E-3, 0.5, 5E-3, 5E-3
+*CLOAD, AMPLITUDE=A1
 Nsurface, 1, 0.
 Nsurface, 2, 0. 
 Nsurface, 3, 0.
-*CLOAD, AMPLITUDE=A1
+*CLOAD
 **Specify external load after the interface loads so that the indices for xforc always start from 0!
-Nload, 2, -10
+Nload, 2, -.1
 *NODE FILE
 U
 *NODE PRINT,NSET=Nall

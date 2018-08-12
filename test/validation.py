@@ -60,9 +60,8 @@ def read_dat( dat_path, nsize, first_node, last_node ):
 		beam = {}	
 	
 		while(True):
-			print(f.readline())
+			f.readline()
 			step_header = f.readline()
-			print step_header
 			if not(step_header): break
 			step = float(step_header.split("time  ")[-1])
 			data_type = step_header.strip()[0]
@@ -95,13 +94,12 @@ def compare_beam_step( beam1, beam2, beam_mono, tol ):
 	for intf_node in nsurf_indx:
 		interface_delta = [abs(x - y) for x,y in zip(beam1[intf_node],beam2[intf_node])]
 #		print ["%.4e" % x for x in interface_delta]
-		if any([x > tol for x in interface_delta]):
-			print "Displacements and/or forces do not meet at the interface!"
-			print "Difference:", intf_node+1, ":", ["%.4e" % x for x in interface_delta]
+#		if any([x > tol for x in interface_delta]):
+#			print "Displacements and/or forces do not meet at the interface!"
+#			print "Difference:", intf_node+1, ":", ["%.4e" % x for x in interface_delta]
 			#do not proceed if there is a discontinuity
 #			return False
-		else: print "Interface check ok! (tolerance = ", tol,")"
-	print "########################################"	
+#		else: print "Interface check ok! (tolerance = ", tol,")"
 
 	## partitioned/monolithic check
 	
@@ -143,19 +141,19 @@ def compare_beam_step( beam1, beam2, beam_mono, tol ):
 		
 
 		## output
-		print "Displacement errors:"
-		for i in xrange(261):
-			print "Node", i+1, [": %.4e" % x for x in error[i][:3]]
-		print "Relative errors (error/ref.displacement) (using beam_mono displacements as ref.):"
-		for i in xrange(261):
-			print "Node", i+1, [" %.2f" % x for x in rel_err[i][:3]]	
+#		print "Displacement errors:"
+#		for i in xrange(261):
+#			print "Node", i+1, [": %.4e" % x for x in error[i][:3]]
+#		print "Relative errors (error/ref.displacement) (using beam_mono displacements as ref.):"
+#		for i in xrange(261):
+#			print "Node", i+1, [" %.2f" % x for x in rel_err[i][:3]]	
 
-		print "Force errors"
-		for i in xrange(261):
-			print "Node", i+1, [": %.4e" % x for x in error[i][3:]]
-		print "Relative errors (error/ref.force) (using beam_mono  as ref.):"
-		for i in xrange(261):
-			print "Node", i+1, [" %.2f" % x for x in rel_err[i][3:]]	
+#		print "Force errors"
+#		for i in xrange(261):
+#			print "Node", i+1, [": %.4e" % x for x in error[i][3:]]
+#		print "Relative errors (error/ref.force) (using beam_mono  as ref.):"
+#		for i in xrange(261):
+#			print "Node", i+1, [" %.2f" % x for x in rel_err[i][3:]]	
 		print "Errors exceed the tolerated value of", tol
 		print "Global L2 norm of displacement error =", L2d
 		print "L2 norm of component x of displacement error=", L2dx

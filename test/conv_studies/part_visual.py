@@ -14,7 +14,7 @@ nsize2 = 81
 nsizem = 261 # nsize1 + nsize2 - nsurface_size
 
 # time steps. set in precice-config.xml
-nsteps = 100
+nsteps = 50
 
 
 
@@ -158,7 +158,7 @@ def make_diff_frd( frd1, frd2 ):
 ########################## MAIN #################################
 
 if ( args.action == "join" ):
-	join_frd( "Density/7.8E-12_beam1.frd", "Density/7.8E-12_beam2.frd" )
+	join_frd( "QR2_limit_1e-05_beam1.frd", "QR2_limit_1e-05_beam2.frd" )
 elif ( args.action == "makediff" ):
 	make_diff_frd( "beam_part.frd", "Density/reference/7.8E-12_beam_mono.frd" )
 

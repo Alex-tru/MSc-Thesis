@@ -61,7 +61,7 @@
             <data name="Displacements0" mesh="Calculix_Mesh2"/>
             <data name="Forces0" mesh="Calculix_Mesh2"/>
             <preconditioner type="residual-sum"/>
-            <filter type="QR2" limit="4e-5"/>
+            <filter type="QR2" limit="1e-4"/>
             <initial-relaxation value="0.1"/>
             <max-used-iterations value="60"/>
             <timesteps-reused value="10"/>

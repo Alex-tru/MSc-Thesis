@@ -1,0 +1,11 @@
+read CalculixMono/beam_mono.frd
+ds l
+view disp
+frame
+plot e all n
+plus n all g
+rot x
+scal d 1e-20
+movi frames auto
+ds 1 ah
+

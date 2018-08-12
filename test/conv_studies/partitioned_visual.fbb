@@ -1,10 +1,10 @@
 read beam_part.frd
 ds l
 view disp
-scal d 1e1
 frame
 plot e all n
 plus n all g
 rot x
 ds 1 ah
-anim tune 0.001
+anim tune 0.01
+scal d 0.00000001
