@@ -1,0 +1,34 @@
+**
+**   Structure: cantilever beam.
+**
+**
+*INCLUDE, INPUT=CalculixMesh/all2.msh
+*INCLUDE, INPUT=CalculixMesh/fix2.nam
+*BOUNDARY
+Nfix, 1
+*BOUNDARY
+Nfix, 2
+*BOUNDARY
+Nfix, 3
+*NSET,NSET=Nload
+928, 961, 963, 930, 895
+*MATERIAL,NAME=EL
+*ELASTIC
+ 210000.0,        .3
+*DENSITY
+7.8E-9
+*SOLID SECTION,ELSET=Eall,MATERIAL=EL
+*AMPLITUDE, NAME=A1
+0., 1.,
+.001, 0.,
+5., 0.
+*STEP, INC=10000, NLGEOM
+*DYNAMIC
+1E-3, .1, 1E-3, 1E-3
+*CLOAD, AMPLITUDE=A1
+Nload, 2, -1
+*NODE FILE
+U
+*NODE PRINT,NSET=Nall
+U,RF
+*END STEP

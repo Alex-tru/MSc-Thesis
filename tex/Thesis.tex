@@ -114,7 +114,7 @@
         \item The growth of computational power, specially with parallelization, makes multiphysics possible and powerful. We have a synergy between distributed computing and a partitioned approach to modelling.
         \item Our contribution to multiphysics is a kind of "pseudo"-multiphysics, due to the fact that in our application all components share the same physical principles (structural mechanics).
         \item We use the term multimodel for this modelling of the same physics in several subsystems. That is because the model is numerically different for each subsystem. This is, the integration scheme and linearity of the numerical methods will generally not be the same.
-        \item A partitioned structure-structure interaction scheme has not been explored or attempted extensively. For fluid-structure interaction there is a larger variety of studies, including many with a partitioned approach. 
+        \item A partitioned Structure-Structure Interaction (SSI) scheme has not been exhaustively explored or attempted. For Fluid-Structure Interaction (FSI) there is a larger variety of studies, including many with a partitioned approach. 
         \item We see that we aim, not to integrate different physics, but to search for efficiency via the modularity of the method applied to the same physical system and the subsequent coupling of the solving modules.
         
     % Introduce multi-physics
@@ -134,92 +134,125 @@
         \item Multiphysics/multimodelling translates here into using the same single-physics solver for each system and then (strongly) coupling them with a tool (preCICE)
     \end{itemize}
     
-    This report is structured in the following way. After presenting the background and motivations, in section 2 \ldots
+    This report is structured in the following way. In the remaining(in what remains) of this chapter we present the motivation of the thesis and its background. Next, in chapter 2 we introduce the concepts from a theoretical point of view, and show the mathematical frameworks. After that, in chapter 3 we take a look at the existing code (software) that has a role in this project, preCICE and CalculiX. In chapter 4 we describe the implementation of the preCICE adapter for CalculiX and how SSI functionality has been incorporated in it. Following that, in chapter 5 we go through the code testing and performance experiments, and we give an interpretation of the results obtained. Finally, conclusions of the project are debated in chapter 6. \ldots
+    
+    \section{Motivation}
+    
+        \begin{itemize}
+            \item Speedup from scaling of parallelization running Calculix in a massively parallel setup [ref CodeAster?].
+            \item Fast-paced development, use of existing single-physics black-box solvers.
+            \item Speedup from linear-nonlinear coupling. Simulate part of interest (with complex, hard-to-capture behaviour/effects) with nonlinear model, and the rest with linear.
+            \item Monolithic methods impose conditions on the interface that ensure convergence. We hope that our partitioned scheme brings this property, to achieve this we try to replicate these conditions with implicit coupling.
+        \end{itemize}
     
     \section{Background}
 
         \begin{itemize}
             \item A short overview of developments in computational structural mechanics 1. in general, 2. in the monolithic path, 3. in the partitioned path (not much here, put all refs. found). Saying what every method has brought: domain decomposition, multi-scaling, explicit/implicit, etc. References here: Gravouil 2001 and 2003, Cagatay 2016, Prakash 2004 and 2013, Gendre 2009 and 2011, Causin 2005, Faucher 2002, Herry 2002, Ghanem 2012,%refs here may be mentioned more than once if they brought new stuff in general and also for the monolithic/partitioned paradigm per se
-            \item A short overview of developments in partitioned FSI. Refs. here: Matthies 2002.
+            \item A short overview of developments in partitioned FSI. Refs. here: Matthies 2002 has implicit coupling in a partitioned FSI simulation.
             \item For a survey of multi-physics frameworks developed until 2015, see [Babur 2015].
-        \end{itemize}
-
-    \section{Motivation. Goals.}
-    
-        \begin{itemize}
-            \item Speedup from scaling of parallelization running Calculix in a massively parallel setup [refs Benjamin's thesis?].
-            \item Fast-paced development, use of existing single-physics black-box solvers.
-            \item Speedup from linear-nonlinear coupling. Simulate part of interest (with complex, hard-to-capture behaviour/effects) with nonlinear model, and the rest with linear.
-            \item Monolithic methods impose conditions on the interface that ensure convergence. We hope that our partitioned scheme brings this property, to achieve this we try to replicate these conditions with implicit coupling.
         \end{itemize}
 
 
 \chapter{Theory}
 
+    We just saw/in the previous chapter...
+    In this chapter...
+
     \section{Basic notions of computational structural mechanics}
     
         \begin{itemize}
-            \item Presentation of the equations of motion that govern the domain we simulate.  Our (only) physics.
-            \item Discretization of the equations through a FEM. Presentation in the matrix form. This form is valid in each subsystem and the system as a whole. Mass matrix, internal and external forces.
-            \item Newmark method, time integration.
-            \item ~[ref. Gravouil, ]
+            \item Presentation of the equations of motion that govern the domain we simulate.  Our (only) physics. [ref. Gravouil-Combescure 2001, 2002]
+                \item In the following lines we see the expressions derived from a finite element method in solid dynamics. Let us assume that an elastic, deformable solid occupies a domain $\Omega$. We have the spatially discretized equations of motion for this solid,
+                \begin{equation}
+                    M\ddot{U}(t) + F_{int}(U(t)) = F_{ext}(t),
+                    \label{eq:1}
+                \end{equation}
+                for times $t\in(0,T]$, where U(t) are the nodal displacements, $F_{int}$ and $F_{ext}$ are the internal and external forces, respectively, acting on the structure, and $M$ is its mass matrix. Initial conditions $U(0)=U_{0}$, $\dot{U}(0)=\dot{U}_{0}$ and boundary conditions $U\rvert_{\partial\Omega}=U_{b}$.
+                Assuming linear elasticity we have
+                \begin{equation}
+                    F_{int}(U(t)) = KU(t),
+                    \label{eq:2}
+                \end{equation}
+                with a stiffness matrix K.
+            \item Newmark method, time integration. HHT method, the one used by CalculiX, which derived from $\alpha$-method, which in turn derived from Newmark method
+            \item ~[ref. Gravouil, Dhondt's 2004 thermomechanical FEM book]
         \end{itemize}
     
-    \section{Coupling structural simulations. Partitioned and monolithic approaches}
+    \section{Coupling structural simulations with the monolithic approach}
     
         \begin{itemize}
-            \item Dual Schur decomposition. 
-            \item Finer or coarser refining of mesh in subdomains.
+            \item Dividing a domain in subdomains (Dual Schur decomposition) and couple solution in each subdomain. 
+            \item What do we mean by monolithic coupling. (very important, make this completely clear) We talk about monolithic and partitioned from a point of view of the algorithm. Therefore, when the system of equations includes the linking terms between subdomains, instead of extra algorithmic steps of variable exchange after solving the equations without these terms in each subdomain, we consider that as monolithic coupling.
+            \item The equations after domain decomposition have the general form
+                \begin{equation}
+                    M\ddot{U}^{k}(t) + F_{int}^{k}(U(t)) = F_{ext}^{k}(t) + F_{link}^{k}
+                    \label{eq:3}
+                \end{equation}
+            for subdomain $k$, where $F_{link}$ is the linking term. The structure of this term will depend on the geometry of the interface between subdomains and the values of the dynamic quantities in that interface.
             \item Many (monolithic) methods implement subcycling. This means that for each division of the spatial domain, the time discretization is performed with different step lengths. We will mention this but not go into detail as we restrict to having only one time-step length. (\ldots to having the same time-step length for all spatial subdomains)
             \item Methods implementing coupling in linear conditions, nonlinear, and linear-nonlinear. 
             \item Explicit and implicit time integration. Note that in a monolithic setup this has nothing to do with a fixed-point iteration. This is relevant because later we will mainly use the terms explicit and implicit when referring to the partitioned coupling setup. The latter incorporates the local integration methods with a black-box philosophy that makes the consideration of implicit/explicit time integration not so relevant in practice. (in the same line, we don't go into the FEM implementation of calculix (see ref HHT method))
+            \item Finer or coarser refining of mesh in subdomains.
+            \item Start from the equations of motion in matrix form from previous section.
+            \item Formulation for each subsystem and definition of terms of connection.
+            \item Main/general methodologies used in literature. [ref. Gravouil 2001 and 2003, Prakash 2004 and 2013, etc.]
         \end{itemize}    
     
-        \subsection{Monolithic structural simulation}
+    \section{Coupling structural simulations with the partitioned approach}
         
-            \begin{itemize}
-                \item Start from the equations of motion in matrix form from previous section.
-                \item Formulation for each subsystem and definition of terms of connection.
-                \item Main/general methodologies used in literature.
-                \item ~[ref. Gravouil 2001 and 2003, Prakash 2004 and 2013, etc.]
-            \end{itemize}
+        \begin{itemize}
+            \item Review with terminology in [Felippa 2001]. Consider that this review is about simulations with at least one structural component, not only structure-structure coupling.
+            \item The linking term of Eq.~\ref{eq:3} is substituted here for imposition of Dirichlet and Neumann boundary conditions. 
+            \item We have different possibilities when it comes to select which variables to use for coupling. In this project, we observe that displacements and forces are variables given by CalculiX in the nodes of the structure, and thus they are chosen to this end. Then, as an example, if subdomains $A$ and $B$ share a surface $\Gamma$, Dirichlet and Neumann BCs are of the form $U_{\Gamma}^A (t)= U_{\Gamma}^B (t-1)$ and $F_{ext,~\Gamma}^B (t) = M\ddot{U}_{\Gamma}^A (t-1)$ respectively.
+            \item ~[ref. Gendre 2009 and 2011, etc.]
+        \end{itemize}
             
-        \subsection{Partitioned structural simulations}
+        \subsection{From partitioned FSI}
+            \begin{itemize}
+                \item In FSI we have a setup that has one structural participant in the simulation.
+                \item Added mass effect. Will it affect a purely structural simulation? [Causin 2005, Idelsohn 2009]
+                \item FSI in preCICE [preCICE refs.]
+                \item Matthies 2002 has implicit coupling in a partitioned FSI simulation.
+            \end{itemize}
+                
+        \subsection{Dirichlet-Neumann boundary conditions}
+            
+            \begin{itemize}
+                \item What are Dirichlet and Neumann BCs
+                \item Values of displacements at an interface $\Gamma$ in subdomain A are Dirichlet BCs at $\Gamma$ for subdomain B.
+                \item Values of forces at an interface $\Gamma$ in subdomain B are Neumann BCs at $\Gamma$ for subdomain A.
+                \item Equations showing how they have the role of coupling displacements(dirichlet) and forces(neumann).
+            \end{itemize}
         
+        \subsection{Quasi-Newton schemes}
+            
             \begin{itemize}
-                \item Review with terminology in [Felippa 2001]. Consider that this review is about simulations with at least one structural component, not only structure-structure coupling.
-                \item ~[ref. Gendre 2009 and 2011, etc.]
+                \item What are they and why do we (need to) apply them.
+                \item How do they work (get a bit technical)[refs. Benjamin's thesis, preCICE paper]
             \end{itemize}
-            
-            \subsubsection{From partitioned FSI}
-                \begin{itemize}
-                    \item In FSI we have a setup that has one structural participant in the simulation.
-                    \item Added mass effect. Will it affect a purely structural simulation? [Causin 2005, Idelsohn 2009]
-                    \item FSI in preCICE [preCICE refs.]
-                    \item Matthies 2002 has implicit coupling in a partitioned FSI simulation.
-                \end{itemize}
-            
+   
+   
 \chapter{Software in the project}
-
+    
+    We just saw/in the previous chapter...
+    In this chapter...
+    
     \section{preCICE - A coupling library for partitioned multi-physics simulation}
         
         \subsection{Purpose}
         
         \begin{itemize}
-            \item Why use preCICE.
+            \item What is the motivation behind preCICE and why we use it.
         \end{itemize}
         
-        \subsection{Overview of functioning}
+        \subsection{Overview of functionality}
         
         \begin{itemize}
-            \item Very basic explaining of the coupling schemes, communication, data mapping, config files, etc.
+            \item Very basic explaining of the coupling schemes, communication, data mapping, config files, API, etc.
+            \item Quasi-Newton in preCICE (quick comment on implementation, tuning them in precice,...)
+            \item ~[ref. preCICE wiki]
         \end{itemize}
-        
-            \subsubsection{Quasi-Newton schemes}
-                \begin{itemize}
-                    \item What are they and why do we (need to) apply them.
-                    \item How do they work (get a bit technical) and how are they implemented (user level). [refs. Benjamin's thesis, preCICE paper]
-                \end{itemize}
     
     
     \section{CalculiX - A three-dimensional structural finite element program}
@@ -227,71 +260,90 @@
         \begin{itemize}
             \item CalculiX is a program that integrates solving routines for several types of structural finite element analysis. [ref. calculix page, manual]
             \item We run (geometrically) linear and nonlinear dynamic analysis.
+            \item Black-box concept
         \end{itemize}
     
-        \subsection{Meshing and configuration of a run}
+        \subsection{Mesh and configuration}
     
-        \subsection{Numerics}
-        
-            \begin{itemize}
-                \item HHT method implemented in calculix, which derived from $\alpha$-method, which in turn derived from Newmark method
-                \item CalculiX is black-box in our method (\ldots is black-box for preCICE), therefore the contents of this section are merely informative but not needed for implementation, etc.
-            \end{itemize}
-        
-        
-\chapter{Methodology}
 
-    \section{Overview}
+\chapter{Implementation}
 
-    \section{Implementation}
+    We just saw/in the previous chapter...
+    In this chapter we describe the implementation of Structure-Structure Interaction as an extension of the preCICE adapter for CalculiX.
+
+    \begin{itemize}
+        \item The adapter was first implemented for Conjugate Heat Transfer.[ref.]
+        \item Then it was extended to Fluid Structure Interaction.[ref.]
+        \item For this thesis, SSI functionality was added.
+        \item We explain the general functioning of the adapter, and then the particularities of SSI.
+    \end{itemize}
     
-        Describe implementation of the structure-structure component in the preCICE adapter for CalculiX.
+    \section{Structure of the adapter code}
     
-    \section{Tests}
-    
-        \subsection{Beam test case}
-            
-            \subsubsection{CalculiX input file/deck}
-                \begin{itemize}
-                    \item Linear / Nonlinear
-                \end{itemize}
-            \subsubsection{Geometry}
-                \begin{itemize}
-                    \item Meshes.
-                \end{itemize}
-        
-        \subsection{Comparison partitioned vs. monolithic}
-
-            \begin{itemize}
-                \item Quantification of error using L2 norm for displacements and forces. Implementation.
-            \end{itemize}
-            
-        \subsection{Convergence studies/experiments}
-            \begin{itemize}
-                \item Range of validity of parameters: where the simulation converges.
-                \item Optimal parameters: where the simulation is faster. Less coupling iterations.
-                \item Tests to find valid and optimal parameters.
-            \end{itemize}
-            \subsubsection{Parameters}
-                \begin{itemize}
-                    \item Limit for the filtering in Quasi-Newton schemes (IQN-ILS). Filter type 1 and 2.
-                    \item Convergence measure limit.
-                    \item Material properties of structure: density, Young modulus, Poisson coefficient.
-                    \item Time step.
-                    \item Load.
-                \end{itemize}
-
-\chapter{Results and discussion}
-
-    \section{Convergence studies}
-   
         \begin{itemize}
+            \item Flow diagram as a general scheme of the execution of preCICE-CalculiX.
+            \item Diagram showing the exchange of variables, and writing of Dirichlet/Neumann BCs.
+            \item Main functions and data structures, putting in words what can be seen in the diagrams.
+        \end{itemize}
+    
+
+\chapter{Numerical studies}
+
+    We just saw/in the previous chapter...
+    In this chapter...
+
+    \section{Beam test case}
+            
+        \subsection{CalculiX input file/deck}
+        
+            \begin{itemize}
+                \item Relevant parts.
+                \item Initial conditions $U_{0}$ and $\dot{U}_{0}$ are both zero.
+                \item Boundary conditions (Single Point Constraints).
+                \item Stiffness matrix (Young modulus, Poisson ratio...)
+                \item Linear / Nonlinear
+            \end{itemize}
+        
+        \subsection{Geometry}
+        
+            \begin{itemize}
+                \item Meshes.
+            \end{itemize}
+        
+    \section{Comparison partitioned vs. monolithic}
+
+        \begin{itemize}
+            \item Quantification of error using L2 norm for displacements and forces. This is defined as...
+        \end{itemize}
+            
+    \section{Convergence studies/experiments}
+    
+        \begin{itemize}
+            \item Range of validity of parameters: where the simulation converges.
+            \item Optimal parameters: where the simulation is faster. Less coupling iterations.
+            \item Tests to find valid and optimal parameters.
             \item Study of error against convergence limit. Error proportional to convergence limit up to an offset. Test for several time steps. Error offset decreases with time step (in a reasonable range for time steps) in a very continuous and smooth way. Deduce offset is due to a time splitting error introduced by the coupling.
             \item Evolution of iterations necessary to converge in each time step. Effect of step loading/constant loading.
+            \item (added mass effect) Related with density? Not observed at all? 
         \end{itemize}
+            
+        \subsection{Parameters}
+    
+            \begin{itemize}
+                \item Limit for the filtering in Quasi-Newton schemes (IQN-ILS). Filter type 1 and 2.
+                \item Convergence measure limit.
+                \item Material properties of structure: density, Young modulus, Poisson coefficient.
+                \item Time step.
+                \item Load.
+            \end{itemize}
+            
+    \section{Performance comparison}
 
 
 \chapter{Conclusions}
+
+    We just saw/in the previous chapter...
+    In this chapter...
 
 \chapter*{Acknowledgements}
 %% ----------------------------------------------------------------

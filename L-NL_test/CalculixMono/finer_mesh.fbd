@@ -1,0 +1,9 @@
+pnt p1 0 0 0
+seta points p p1
+swep points sweppoints tra 0 0 8 64
+seta lines l L001
+swep lines sweplines tra 0 1 0 8
+seta surfaces s A001
+swep surfaces swepsurfaces tra 1 0 0 8
+elty all he20
+mesh all
