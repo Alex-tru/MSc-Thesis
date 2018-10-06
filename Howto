@@ -17,3 +17,10 @@ pyhton experimentRunner.py <participant> (in two terminals, one for each calculi
 
 -run experiments with parameters of .inp files of calculix:
 python inp_experimentRunner.py <participant> (in two terminals, one for each calculix participant) (set desired values for experiments in the script)
+
+-save mesh in cgx after creating geometry with .fbd script: 
+in cgx use the command: "send all abq"
+
+-in cgx, see node number at a certain position (x,y,z)
+enq all load rec x y z
+prnt se load

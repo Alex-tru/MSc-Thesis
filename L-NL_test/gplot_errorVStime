@@ -1,0 +1,13 @@
+#plot L2 error curves with data from validation.py and/or validation_2mono.py
+
+set term svg
+set output "Results/errorVStime.svg"
+
+#set xrange [0:1e-4]
+#set yrange[0:1]
+
+set xlabel "t (s)"
+set ylabel "L2 error (mm)"
+
+plot "Results/dt_1e-8_split-errorVStime.csv" u 1:2 t "dt 1e-8 split-error", "Results/dt_1e-8_NLeff-errorVStime.csv" u 1:2 t "dt 1e-8 NLeff-error", "Results/dt_1e-7_split_errorVStime.csv" u 1:2 t "dt 1e-7 split-error", "Results/dt_1e-7_NLeff-errorVStime.csv" u 1:2 t "dt 1e-7 NLeff-error"
+

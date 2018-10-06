@@ -1,0 +1,19 @@
+**
+**   Structure: reinforced pipe. Units: {mm, N, s} 
+**
+**
+*RESTART,READ
+*STEP, INC=100000
+*DYNAMIC, DIRECT
+ 1E-7, 1E-3
+*RESTART, WRITE, FREQUENCY=1
+*CLOAD
+ 3992, 3, -2e5
+**for tr3 2000, 3, -4e-3
+ Nload, 3, -1.2e5
+ Nload2, 3, -7e4
+*NODE FILE, FREQUENCY=100, OUTPUT=2D
+ U
+*NODE PRINT,NSET=Nall
+ U,RF
+*END STEP

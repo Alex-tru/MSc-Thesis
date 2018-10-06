@@ -1,0 +1,44 @@
+**
+**   Structure: part 2 of cantilever beam.
+**  
+**
+*INCLUDE, INPUT=/home/alextru/Desktop/Master/Thesis/L-NL_test/Calculix2/Calculix2Mesh/all3.msh
+*INCLUDE, INPUT=/home/alextru/Desktop/Master/Thesis/L-NL_test/Calculix2/Calculix2Mesh/fix3.nam
+*INCLUDE, INPUT=/home/alextru/Desktop/Master/Thesis/L-NL_test/Calculix2/Calculix2Mesh/interface3.nam
+*BOUNDARY
+Nfix, 1
+*BOUNDARY
+Nfix, 2
+*BOUNDARY
+Nfix, 3
+*NSET,NSET=Nload
+3351, 3358, 3365, 3372, 3379, 3412, 3419, 3426, 3433, 3440, 3473, 3480, 3487, 3494, 3501
+*MATERIAL,NAME=EL
+*ELASTIC
+ 210000.0,        .3
+**  70000.0,        .33
+*DENSITY
+7.8E-9
+**2.7E-9
+*SOLID SECTION,ELSET=Eall,MATERIAL=EL
+*AMPLITUDE, NAME=A1
+0., 1.,
+.001, 1.,
+.002, 0.,
+*STEP, INC=10000000, NLGEOM
+*DYNAMIC,DIRECT
+1E-3, 0.1, 1E-3, 1E-3
+*CLOAD
+Nsurface, 1, 0.
+Nsurface, 2, 0.
+Nsurface, 3, 0.
+*CLOAD, AMPLITUDE=A1
+**Specify external load after the interface loads so that the indices for xforc always start from 0!
+Nload, 2, -1
+*NODE FILE
+U
+*NODE PRINT,NSET=Nall
+U,RF
+**EL PRINT,ELSET=Eall
+**S
+*END STEP

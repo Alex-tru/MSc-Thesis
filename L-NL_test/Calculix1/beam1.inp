@@ -1,0 +1,41 @@
+**
+**   Structure: part 1 of cantilever beam.
+**   
+**
+*INCLUDE, INPUT=/home/alextru/Desktop/Master/Thesis/L-NL_test/Calculix1/Calculix1Mesh/all1.msh
+*INCLUDE, INPUT=/home/alextru/Desktop/Master/Thesis/L-NL_test/Calculix1/Calculix1Mesh/fix1.nam
+*INCLUDE, INPUT=/home/alextru/Desktop/Master/Thesis/L-NL_test/Calculix1/Calculix1Mesh/interface1.nam
+*BOUNDARY
+Nfix, 1
+*BOUNDARY
+Nfix, 2
+*BOUNDARY
+Nfix, 3
+*BOUNDARY
+Nsurface, 1, 3
+*MATERIAL,NAME=EL
+*ELASTIC
+210000.0,   .3
+*DENSITY
+ 7.8E-9
+*SOLID SECTION,ELSET=Eall,MATERIAL=EL
+*AMPLITUDE, NAME=A1
+0., 1., 
+.001, 1.,
+.002, 0.
+*STEP, INC=10000000, NLGEOM
+*DYNAMIC,DIRECT
+1E-3, 0.1, 1E-3, 1E-3
+*CLOAD
+Nsurface, 1, 0.
+Nsurface, 2, 0. 
+Nsurface, 3, 0.
+**CLOAD, AMPLITUDE=A1
+**117, 2, -.01
+*NODE FILE
+U
+*NODE PRINT,NSET=Nall
+U,RF
+**EL PRINT,ELSET=Eall
+**S
+*END STEP

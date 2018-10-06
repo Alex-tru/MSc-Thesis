@@ -1,0 +1,178 @@
+ PNT p0      -0.00000       -0.00000        0.00000 
+ PNT p50     -0.00000        8.00000        0.00000 
+ PNT p10     -0.00000        1.00000        0.00000 
+ PNT p20     -0.00000        3.00000        0.00000 
+ PNT p30     -0.00000        5.00000        0.00000 
+ PNT p40     -0.00000        7.00000        0.00000 
+
+ PNT p1       0.50000       -0.00000        0.00000 
+ PNT P001     0.50000        1.00000        0.00000 
+ PNT P002    -0.00000       -0.00000       -0.50000 
+ PNT P003    -0.00000        1.00000       -0.50000 
+ PNT P006    -0.50000       -0.00000        0.00000 
+ PNT P007    -0.50000        1.00000        0.00000 
+ PNT P00A     0.00000       -0.00000        0.50000 
+ PNT P00C     0.00000        1.00000        0.50000 
+
+ PNT P101     0.50000        3.00000        0.00000 
+ PNT P103    -0.00000        3.00000       -0.50000 
+ PNT P107    -0.50000        3.00000        0.00000 
+ PNT P10C     0.00000        3.00000        0.50000 
+
+ PNT P201     0.50000        5.00000        0.00000 
+ PNT P203    -0.00000        5.00000       -0.50000 
+ PNT P207    -0.50000        5.00000        0.00000 
+ PNT P20C     0.00000        5.00000        0.50000 
+
+ PNT P301     0.50000        7.00000        0.00000 
+ PNT P303    -0.00000        7.00000       -0.50000 
+ PNT P307    -0.50000        7.00000        0.00000 
+ PNT P30C     0.00000        7.00000        0.50000 
+
+ PNT P401     0.50000        8.00000        0.00000 
+ PNT P403    -0.00000        8.00000       -0.50000 
+ PNT P407    -0.50000        8.00000        0.00000 
+ PNT P40C     0.00000        8.00000        0.50000 
+
+
+ LINE L003 p1 P002 p0 8              
+ LINE L006 P002 P006 p0 8              
+ LINE L009 P006 P00A p0 8              
+ LINE L00I P00A p1 p0 8              
+
+
+ LINE L001 p1 P001 8              
+ LINE L002 P002 P003 8              
+ LINE L005 P006 P007 8              
+ LINE L008 P00A P00C 8              
+
+ LINE L004 P001 P003 p10 8              
+ LINE L007 P003 P007 p10 8              
+ LINE L00A P007 P00C p10 8              
+ LINE L00J P00C P001 p10 8              
+
+ LINE L101 P001 P101 16              
+ LINE L102 P003 P103 16              
+ LINE L105 P007 P107 16              
+ LINE L108 P00C P10C 16              
+
+ LINE L104 P101 P103 p20 8              
+ LINE L107 P103 P107 p20 8              
+ LINE L10A P107 P10C p20 8              
+ LINE L10J P10C P101 p20 8              
+
+ LINE L201 P101 P201 16              
+ LINE L202 P103 P203 16              
+ LINE L205 P107 P207 16              
+ LINE L208 P10C P20C 16              
+
+ LINE L204 P201 P203 p30 8              
+ LINE L207 P203 P207 p30 8              
+ LINE L20A P207 P20C p30 8              
+ LINE L20J P20C P201 p30 8              
+
+ LINE L301 P201 P301 16              
+ LINE L302 P203 P303 16              
+ LINE L305 P207 P307 16              
+ LINE L308 P20C P30C 16              
+
+ LINE L304 P301 P303 p40 8              
+ LINE L307 P303 P307 p40 8              
+ LINE L30A P307 P30C p40 8              
+ LINE L30J P30C P301 p40 8              
+
+ LINE L401 P301 P401 8              
+ LINE L402 P303 P403 8              
+ LINE L405 P307 P407 8              
+ LINE L408 P30C P40C 8              
+
+ LINE L404 P401 P403 p50 8              
+ LINE L407 P403 P407 p50 8              
+ LINE L40A P407 P40C p50 8              
+ LINE L40J P40C P401 p50 8              
+
+
+ SHPE CYL1 cyl p0 p10 .5
+ GSUR A101 + CYL1  - L001 + L003 + L002 - L004 
+ GSUR A102 + CYL1  - L002 + L006 + L005 - L007 
+ GSUR A103 + CYL1  - L005 + L009 + L008 - L00A 
+ GSUR A104 + CYL1  - L008 + L00I + L001 - L00J 
+
+ SHPE CYL2 cyl p10 p20 .5
+ GSUR A201 + CYL2  - L101 + L004 + L102 - L104 
+ GSUR A202 + CYL2  - L102 + L007 + L105 - L107 
+ GSUR A203 + CYL2  - L105 + L00A + L108 - L10A 
+ GSUR A204 + CYL2  - L108 + L00J + L101 - L10J 
+
+ SHPE CYL3 cyl p20 p30 .5
+ GSUR A301 + CYL3  - L201 + L104 + L202 - L204 
+ GSUR A302 + CYL3  - L202 + L107 + L205 - L207 
+ GSUR A303 + CYL3  - L205 + L10A + L208 - L20A 
+ GSUR A304 + CYL3  - L208 + L10J + L201 - L20J 
+
+ SHPE CYL4 cyl p30 p40 .5
+ GSUR A401 + CYL4  - L301 + L204 + L302 - L304 
+ GSUR A402 + CYL4  - L302 + L207 + L305 - L307 
+ GSUR A403 + CYL4  - L305 + L20A + L308 - L30A 
+ GSUR A404 + CYL4  - L308 + L20J + L301 - L30J 
+
+ SHPE CYL5 cyl p40 p50 .5
+ GSUR A501 + CYL5  - L401 + L304 + L402 - L404 
+ GSUR A502 + CYL5  - L402 + L307 + L405 - L407 
+ GSUR A503 + CYL5  - L405 + L30A + L408 - L40A 
+ GSUR A504 + CYL5  - L408 + L30J + L401 - L40J 
+
+
+ seta axiRF1 l L001 
+ seta axiRF2 l L002 
+ seta axiRF3 l L005 
+ seta axiRF4 l L008 
+ swep axiRF1 swepaxiRF1 tra -0.1 0 0 2
+ swep axiRF2 swepaxiRF2 tra 0 0 0.1 2
+ swep axiRF3 swepaxiRF3 tra 0.1 0 0 2
+ swep axiRF4 swepaxiRF4 tra 0 0 -0.1 2
+ seta axiRF11 l L101 
+ seta axiRF12 l L102 
+ seta axiRF13 l L105 
+ seta axiRF14 l L108 
+ swep axiRF11 swepaxiRF11 tra -0.1 0 0 2
+ swep axiRF12 swepaxiRF12 tra 0 0 0.1 2
+ swep axiRF13 swepaxiRF13 tra 0.1 0 0 2
+ swep axiRF14 swepaxiRF14 tra 0 0 -0.1 2
+ seta axiRF21 l L201 
+ seta axiRF22 l L202 
+ seta axiRF23 l L205 
+ seta axiRF24 l L208 
+ swep axiRF21 swepaxiRF21 tra -0.1 0 0 2
+ swep axiRF22 swepaxiRF22 tra 0 0 0.1 2
+ swep axiRF23 swepaxiRF23 tra 0.1 0 0 2
+ swep axiRF24 swepaxiRF24 tra 0 0 -0.1 2
+ seta axiRF31 l L301 
+ seta axiRF32 l L302 
+ seta axiRF33 l L305 
+ seta axiRF34 l L308 
+ swep axiRF31 swepaxiRF31 tra -0.1 0 0 2
+ swep axiRF32 swepaxiRF32 tra 0 0 0.1 2
+ swep axiRF33 swepaxiRF33 tra 0.1 0 0 2
+ swep axiRF34 swepaxiRF34 tra 0 0 -0.1 2
+ seta axiRF41 l L401 
+ seta axiRF42 l L402 
+ seta axiRF43 l L405 
+ seta axiRF44 l L408 
+ swep axiRF41 swepaxiRF41 tra -0.1 0 0 2
+ swep axiRF42 swepaxiRF42 tra 0 0 0.1 2
+ swep axiRF43 swepaxiRF43 tra 0.1 0 0 2
+ swep axiRF44 swepaxiRF44 tra 0 0 -0.1 2
+
+ seta radRF1 l L004 L007 L00A L00J
+ swep radRF1 swepradRF1 scal 0.8 1 0.8 p10 2
+ seta radRF2 l L104 L107 L10A L10J
+ swep radRF2 swepradRF2 scal 0.8 1 0.8 p20 2
+ seta radRF3 l L204 L207 L20A L20J
+ swep radRF3 swepradRF3 scal 0.8 1 0.8 p30 2
+ seta radRF4 l L304 L307 L30A L30J
+ swep radRF4 swepradRF4 scal 0.8 1 0.8 p40 2
+
+ ELTY all q8 
+ mesh all
+

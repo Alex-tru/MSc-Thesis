@@ -1,0 +1,35 @@
+**
+**   Structure: part 1 of reinforced pipe. Units: {mm, N, s} 
+**
+**
+*INCLUDE, INPUT=Calculix1Mesh/all_pipe.msh
+*INCLUDE, INPUT=Calculix1Mesh/fix_pipe.nam
+*INCLUDE, INPUT=Calculix1Mesh/interface_pipe.nam
+*BOUNDARY
+ Nfix, 1, 3
+*BOUNDARY
+ Nsurface, 1, 3
+*MATERIAL,NAME=EL
+*ELASTIC 
+ 2.1E5,        .3
+*DENSITY
+ 7.8E-9
+*SHELL SECTION,ELSET=Eall,MATERIAL=EL
+ 5
+*AMPLITUDE, NAME=A1
+ 0., 1.,
+ .001, 0.,
+ 5., 0.
+*STEP, INC=10000
+*DYNAMIC, DIRECT
+ 1E-7, 1E-3
+*RESTART,WRITE,FREQUENCY=1
+*CLOAD
+Nsurface, 1, 0.
+Nsurface, 2, 0. 
+Nsurface, 3, 0.
+*NODE FILE, FREQUENCY=100, OUTPUT=2D
+ U
+*NODE PRINT,NSET=Nall
+ U,RF
+*END STEP
